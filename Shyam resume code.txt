@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder App</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Builder</h1>
+        <div class="resume-builder">
+            <!-- Input Form Section -->
+            <div class="input-form" id="inputForm">
+                <h2>Enter Your Details</h2>
+                <form id="resumeForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="e.g., John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Professional Title</label>
+                        <input type="text" id="title" name="title" placeholder="e.g., Web Developer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="e.g., john.doe@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" placeholder="e.g., +1 234 567 8900">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" placeholder="e.g., New York, USA">
+                    </div>
+                    <div class="form-group">
+                        <label for="summary">Professional Summary</label>
+                        <textarea id="summary" name="summary" rows="3" placeholder="A brief summary of your professional background..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="experience">Work Experience</label>
+                        <textarea id="experience" name="experience" rows="3" placeholder="List your work experience..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="education">Education</label>
+                        <textarea id="education" name="education" rows="3" placeholder="List your educational background..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="skills">Skills</label>
+                        <textarea id="skills" name="skills" rows="3" placeholder="List your key skills..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projects">Projects</label>
+                        <textarea id="projects" name="projects" rows="3" placeholder="List any relevant projects..."></textarea>
+                    </div>
+                    <button type="button" onclick="generateResume()">Generate Resume</button>
+                </form>
+            </div>
+
+            <!-- Resume Preview Section -->
+            <div class="resume-preview" id="resumePreview">
+                <h2>Resume Preview</h2>
+                <div class="resume-output" id="resumeOutput">
+                    <!-- Resume content will be inserted here dynamically -->
+                </div>
+                <button onclick="printResume()">Print Resume</button>
+                <button onclick="editResume()">Edit Resume</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+h2 {
+    color: #34495e;
+    margin-bottom: 15px;
+}
+
+/* Resume Builder Layout */
+.resume-builder {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.input-form, .resume-preview {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Resume Preview Styles */
+.resume-output {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background: white;
+}
+
+.resume-header h1 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.resume-header p {
+    margin: 5px 0;
+    color: #7f8c8d;
+}
+
+.resume-section {
+    margin-bottom: 20px;
+}
+
+.resume-section h3 {
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.resume-section ul {
+    list-style-type: none;
+}
+
+.resume-section ul li {
+    margin-bottom: 5px;
+}
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .resume-output, .resume-output * {
+        visibility: visible;
+    }
+    .resume-output {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .resume-builder {
+        flex-direction: column;
+    }
+}function generateResume() {
+    // Get form values
+    const name = document.getElementById('name').value;
+    const title = document.getElementById('title').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const location = document.getElementById('location').value;
+    const summary = document.getElementById('summary').value;
+    const experience = document.getElementById('experience').value;
+    const education = document.getElementById('education').value;
+    const skills = document.getElementById('skills').value;
+    const projects = document.getElementById('projects').value;
+
+    // Generate HTML for resume preview
+    const resumeHTML = `
+        <div class="resume-header">
+            <h1>${name}</h1>
+            <p>${title}</p>
+            <p><i class="fas fa-envelope"></i> ${email} | <i class="fas fa-phone"></i> ${phone} | <i class="fas fa-map-marker-alt"></i> ${location}</p>
+        </div>
+        <div class="resume-section">
+            <h3>Professional Summary</h3>
+            <p>${summary}</p>
+        </div>
+        <div class="resume-section">
+            <h3>Work Experience</h3>
+            <p>${experience}</p>
+        </div>
+        <div class="resume-section">
+            <h3>Education</h3>
+            <p>${education}</p>
+        </div>
+        <div class="resume-section">
+            <h3>Skills</h3>
+            <p>${skills}</p>
+        </div>
+        <div class="resume-section">
+            <h3>Projects</h3>
+            <p>${projects}</p>
+        </div>
+    `;
+
+    // Insert into preview div
+    document.getElementById('resumeOutput').innerHTML = resumeHTML;
+
+    // Show preview section and hide form (optional)
+    document.getElementById('inputForm').style.display = 'none';
+    document.getElementById('resumePreview
